@@ -91,9 +91,9 @@ BEGIN
 		PRINT '>> ------'
 
 		SET @start_time = GETDATE()
-		TRUNCATE TABLE bronze.px_cat_g1v2
+		TRUNCATE TABLE bronze.erp_px_cat_g1v2
 		PRINT '>> Inserting Data (after truncate): bronze.px_cat_g1v2';
-		BULK INSERT bronze.px_cat_g1v2
+		BULK INSERT bronze.erp_px_cat_g1v2
 		FROM 'C:\REPOS\DataProjects\sql-data-warehouse-project\datasets\source_erp\PX_CAT_G1V2.csv'
 		WITH (
 			FIRSTROW = 2,

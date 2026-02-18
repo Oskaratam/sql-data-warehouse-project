@@ -38,9 +38,9 @@ CREATE TABLE silver.crm_sales_details (
     sls_ord_num  NVARCHAR(50),
     sls_prd_key  NVARCHAR(50),
     sls_cust_id  INT,
-    sls_order_dt INT,
-    sls_ship_dt  INT,
-    sls_due_dt   INT,
+    sls_order_dt DATE,
+    sls_ship_dt  DATE,
+    sls_due_dt   DATE,
     sls_sales    INT,
     sls_quantity INT,
     sls_price    INT,
@@ -71,14 +71,41 @@ CREATE TABLE silver.erp_loc_a101 (
 GO
 
 
-IF OBJECT_ID ('silver.px_cat_g1v2', 'U') IS NOT NULL
+IF OBJECT_ID ('silver.erp_px_cat_g1v2', 'U') IS NOT NULL
 	DROP TABLE silver.px_cat_g1v2;
-CREATE TABLE silver.px_cat_g1v2 (
+CREATE TABLE silver.erp_px_cat_g1v2 (
 	id NVARCHAR(10),
 	cat NVARCHAR(50),
 	subcat NVARCHAR(50),
 	maintenance NVARCHAR(3),
 	dwh_create_date DATETIME2 DEFAULT GETDATE()
 )
+GO
+
+IF OBJECT_ID ('silver.ufnConvertCountryCode', 'U') IS NOT NULL
+	DROP FUNCTION silver.ufnConvertCountryCode;
+GO
+
+CREATE FUNCTION silver.ufnConvertCountryCode
+(
+	@CountryCode NVARCHAR(50)
+)
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+	DECLARE @FullName NVARCHAR(50);
+
+	SET @FullName = CASE UPPER(TRIM(@CountryCode)) 
+		WHEN 'DE' THEN 'Germany'
+		WHEN 'US' THEN 'United States of America'
+		WHEN 'USA' THEN 'United States of America'
+		WHEN 'UA' THEN 'Ukraine'
+		WHEN 'UK' THEN 'United Kingdom'
+		WHEN '' THEN 'n/a'
+		ELSE @CountryCode
+	END
+
+	RETURN @FullName
+END
 GO
 
