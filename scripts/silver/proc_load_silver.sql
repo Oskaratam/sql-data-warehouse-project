@@ -203,8 +203,7 @@ BEGIN
 	BEGIN CATCH 
 		PRINT '!ERROR WHILE LOADING SILVER LAYER!'
 		PRINT 'Error message: ' + ERROR_MESSAGE()
-		PRINT 'Error number: ' + ERROR_NUMBER()
+		PRINT 'Error number: ' + CAST(ERROR_NUMBER() AS NVARCHAR)
 	END CATCH 
 END
 
-EXEC silver.load_silver
